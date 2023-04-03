@@ -1,7 +1,3 @@
-provider "azurerm" {
-  features {}
-}
-
 resource "random_id" "ran_id" {
   byte_length = 8
 }
@@ -33,7 +29,7 @@ resource "azurerm_dashboard_grafana" "grafana" {
 }
 
 
-resource "azurerm_monitor_log_analytics_workspace" "grafana" {
+resource "azurerm_log_analytics_workspace" "grafana" {
   name                = "grafana-law"
   location            = azurerm_resource_group.grafana.location
   resource_group_name = azurerm_resource_group.grafana.name
@@ -45,10 +41,7 @@ resource "azurerm_monitor_log_analytics_workspace" "grafana" {
 resource "azurerm_monitor_diagnostic_setting" "grafana" {
   name               = "grafana-diagnostics"
   target_resource_id = azurerm_dashboard_grafana.grafana.id
-
-  log_analytics_destination {
-    workspace_id = azurerm_monitor_log_analytics_workspace.grafana.id
-  }
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.grafana.id
   
     metric {
     category = "AllMetrics"
