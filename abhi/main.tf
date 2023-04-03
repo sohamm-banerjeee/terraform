@@ -45,11 +45,11 @@ resource "azurerm_monitor_diagnostic_setting" "grafana" {
   
     metric {
     category = "AllMetrics"
-    enabled  = false
+    enabled  = true
 
     retention_policy {
-      days    = 0
-      enabled = false
+      days    = 2
+      enabled = true
     }
   }
 }
