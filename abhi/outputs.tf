@@ -14,6 +14,6 @@ output "endpoint" {
 }
 
 output "grafana_version" {
-  description = "The version of Grafana running on the Managed Grafana instance."
+  description = "The version of Grafana running on the Managed Grafana instance"
   value       = azurerm_dashboard_grafana.grafana.grafana_version
 }
