@@ -53,3 +53,21 @@ resource "azurerm_monitor_diagnostic_setting" "grafana" {
     }
   }
 }
+
+data "azurerm_subscription" "current" {}
+
+# Give Managed Grafana instances access to read monitoring data in current subscription.
+resource "azurerm_role_assignment" "monitoring_reader" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Monitoring Reader"
+  principal_id         = azurerm_dashboard_grafana.grafana.identity[0].principal_id
+}
+
+data "azurerm_client_config" "current" {}
+
+# Give current client admin access to Managed Grafana instance.
+resource "azurerm_role_assignment" "grafana_admin" {
+  scope                = azurerm_dashboard_grafana.grafana.id
+  role_definition_name = "Grafana Admin"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
