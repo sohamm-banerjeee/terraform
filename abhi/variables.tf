@@ -5,7 +5,7 @@ variable "location" {
 }
 
 variable "instance_name" {
-  description = "The name of this managed Grafana instance."
+  description = "The name of the managed Grafana instance."
   type        = string
   default     = "grafana-for-aks"
 }
