@@ -29,21 +29,32 @@ resource "azurerm_dashboard_grafana" "grafana" {
 }
 
 
-resource "azurerm_log_analytics_workspace" "grafana" {
-  name                = "grafana-law"
-  location            = azurerm_resource_group.grafana.location
-  resource_group_name = azurerm_resource_group.grafana.name
-  sku                 = "PerGB2018"
-  retention_in_days   = 30
+data "azurerm_log_analytics_workspace" "aks_law" {
+  name                = "terraform-aks-law"
+  resource_group_name = "defaultresourcegroup-eus"
 }
 
 
+data "azurerm_kubernetes_cluster" "aks_cluster" {
+  name                = "soham-aks"
+  resource_group_name = "terraform-aks-rg"
+}
+
 resource "azurerm_monitor_diagnostic_setting" "grafana" {
   name               = "grafana-diagnostics"
-  target_resource_id = azurerm_dashboard_grafana.grafana.id
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.grafana.id
+  target_resource_id = data.azurerm_kubernetes_cluster.aks_cluster.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.aks_law.id
   
-    metric {
+   log {
+    category = "AuditEvent"
+    enabled  = true
+
+    retention_policy {
+	  days    = 2
+      enabled = true
+    }
+  }
+   metric {
     category = "AllMetrics"
     enabled  = true
 
