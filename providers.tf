@@ -1,14 +1,13 @@
-provider "aws" {
-        alias = "us"
-        region = "us-east-1"
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "3.50.0"
+    }
+  }
 }
 
-provider "aws" {
-        alias = "eu"
-        region = "eu-west-1"
-}
-
-provider "aws" {
-        alias = "sa"
-        region = "sa-east-1"
+provider "azurerm" {
+    features {}
+	subscription_id   = "433b320d-e34f-4e4f-b4b0-43425f4ef986"
 }
