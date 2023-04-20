@@ -17,3 +17,7 @@ output "grafana_version" {
   description = "The version of Grafana running on the Managed Grafana instance."
   value       = azurerm_dashboard_grafana.grafana.grafana_version
 }
+
+output "object_id" {
+  value = data.azuread_user.user.object_id
+}	
