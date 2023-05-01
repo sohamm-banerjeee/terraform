@@ -20,6 +20,45 @@ resource "azurerm_dashboard_grafana" "grafana" {
 }
 
 
+resource "azurerm_log_analytics_workspace" "aks_law" {
+  name                = "terraform-aks-law"
+  location            = var.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}
+
+
+data "azurerm_kubernetes_cluster" "aks_cluster" {
+  name                = "soham-aks"
+  resource_group_name = "terraform-aks-rg"
+}
+
+resource "azurerm_monitor_diagnostic_setting" "grafana" {
+  name               = "grafana-diagnostics"
+  target_resource_id = data.azurerm_kubernetes_cluster.aks_cluster.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.aks_law.id
+  
+   enabled_log {
+    category = "kube-audit-admin"
+
+    retention_policy {
+      enabled = true
+      days = 10
+    }
+  }
+
+  metric {
+    category = "AllMetrics"
+
+    retention_policy {
+      enabled = true
+      days = 10
+    }
+  }
+}
+
+
 data "azurerm_subscription" "current" {}
 
 # Give Managed Grafana instances access to read monitoring data in current subscription.
