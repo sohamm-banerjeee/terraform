@@ -1,0 +1,54 @@
+C:\Users\Abhi>kubectl get svc --namespace monitoring
+NAME                                      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+alertmanager-operated                     ClusterIP   None           <none>        9093/TCP,9094/TCP,9094/UDP   8d
+prometheus-grafana                        ClusterIP   10.0.65.108    <none>        80/TCP                       8d
+prometheus-kube-prometheus-alertmanager   ClusterIP   10.0.243.233   <none>        9093/TCP                     8d
+prometheus-kube-prometheus-operator       ClusterIP   10.0.74.227    <none>        443/TCP                      8d
+prometheus-kube-prometheus-prometheus     ClusterIP   10.0.29.81     <none>        9090/TCP                     8d
+prometheus-kube-state-metrics             ClusterIP   10.0.107.136   <none>        8080/TCP                     8d
+prometheus-operated                       ClusterIP   None           <none>        9090/TCP                     8d
+prometheus-prometheus-node-exporter       ClusterIP   10.0.23.151    <none>        9100/TCP                     8d
+
+
+
+--------------------------------
+
+
+C:\Users\Abhi>az aks get-credentials --resource-group terraform-aks-rg --name npazekperx1
+Merged "npazekperx1" as current context in C:\Users\Abhi\.kube\config
+
+C:\Users\Abhi>kubectl create namespace prometheus
+namespace/prometheus created
+
+C:\Users\Abhi>helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+"prometheus-community" already exists with the same configuration, skipping
+
+C:\Users\Abhi>helm install prometheus prometheus-community/kube-prometheus-stack -n prometheus -f values.yaml
+NAME: prometheus
+LAST DEPLOYED: Wed Jun  7 21:00:45 2023
+NAMESPACE: prometheus
+STATUS: deployed
+REVISION: 1
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace prometheus get pods -l "release=prometheus"
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+
+C:\Users\Abhi>
+
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install nginx-controller ingress-nginx/ingress-nginx -n prometheus
+
+
+
+kubectl describe pods nginx-controller-ingress-nginx-controller-75c4dcb494-sd8nm -n prometheus
+
+
+
+
+kubectl apply -f ingress.yaml
+
+
+
