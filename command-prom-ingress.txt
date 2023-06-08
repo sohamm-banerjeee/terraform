@@ -45,6 +45,10 @@ helm install nginx-controller ingress-nginx/ingress-nginx -n prometheus
 
 kubectl describe pods nginx-controller-ingress-nginx-controller-75c4dcb494-sd8nm -n prometheus
 
+helm uninstall prometheus -n prometheus
+
+helm install prometheus prometheus-community/kube-prometheus-stack --set tolerations[0].key=CriticalAddonsOnly,tolerations[0].operator=Equal,tolerations[0].value=true,tolerations[0].effect=NoSchedule -n prometheus
+
 
 
 
