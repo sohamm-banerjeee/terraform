@@ -49,6 +49,8 @@ helm uninstall prometheus -n prometheus
 
 helm install prometheus prometheus-community/kube-prometheus-stack --set tolerations[0].key=CriticalAddonsOnly,tolerations[0].operator=Equal,tolerations[0].value=true,tolerations[0].effect=NoSchedule -n prometheus
 
+helm install prometheus prometheus-community/kube-prometheus-stack --set tolerations[0].key=CriticalAddonsOnly,tolerations[0].operator=Equal,tolerations[0].value=true,tolerations[0].effect=NoSchedule --set tolerations[1].key=nodekind,tolerations[1].operator=Exists,tolerations[0].effect=NoSchedule -n prometheus
+
 
 
 
