@@ -41,8 +41,6 @@ C:\Users\Abhi>
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm install nginx-controller ingress-nginx/ingress-nginx -n prometheus
 
-
-
 kubectl describe pods nginx-controller-ingress-nginx-controller-75c4dcb494-sd8nm -n prometheus
 
 helm uninstall prometheus -n prometheus
@@ -52,9 +50,10 @@ helm install prometheus prometheus-community/kube-prometheus-stack --set tolerat
 helm install prometheus prometheus-community/kube-prometheus-stack --set tolerations[0].key=CriticalAddonsOnly,tolerations[0].operator=Equal,tolerations[0].value=true,tolerations[0].effect=NoSchedule --set tolerations[1].key=nodekind,tolerations[1].operator=Exists,tolerations[0].effect=NoSchedule -n prometheus
 
 
-
-
 kubectl apply -f ingress.yaml
 
 
+helm install prometheus prometheus-community/kube-prometheus-stack -n prometheus -f prometheus-values.yaml
+
+helm uninstall prometheus -n prometheus
 
