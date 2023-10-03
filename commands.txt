@@ -2,3 +2,6 @@ terraform init
 terraform plan
 terraform apply --auto-approve
 terraform destroy
+
+keytool -importkeystore -srckeystore your.keystore.jks -destkeystore keystore.p12 -srcstoretype JKS -deststoretype PKCS12 -srcstorepass your_keystore_password -deststorepass your_pkcs12_password -alias your_alias
+
