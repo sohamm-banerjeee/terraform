@@ -1,0 +1,52 @@
+resource "kubernetes_secret" "my_tls_secret" {
+  metadata {
+    name = "my-tls-secret"
+  }
+
+  data = {
+    "tls.crt" = file("path/to/certificate.crt")
+    "tls.key" = file("path/to/private.key")
+  }
+}
+
+
+
+resource "kubernetes_secret" "tls_secret" {
+  metadata {
+    name = "my-tls-secret"
+  }
+
+  data = {
+    "tls.crt" = file("${path.module}/path/to/local/repo/certificate.crt")
+    "tls.key" = file("${path.module}/path/to/local/repo/private.key")
+  }
+}
+
+
+
+
+resource "kubernetes_ingress" "example_ingress" {
+  metadata {
+    name = "example-ingress"
+  }
+
+  spec {
+    tls {
+      hosts = ["example.com"]
+      secret_name = kubernetes_secret.my_tls_secret.metadata[0].name
+    }
+
+    rule {
+      host = "example.com"
+      http {
+        path {
+          path = "/"
+          backend {
+            service_name = "example-service"
+            service_port = 80
+          }
+        }
+      }
+    }
+  }
+}
