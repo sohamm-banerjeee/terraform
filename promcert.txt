@@ -4,7 +4,7 @@ resource "kubernetes_secret" "my_tls_secret" {
   }
 
   data = {
-    "tls.crt" = file("path/to/certificate.crt")
+    "tls.crt" = file("path/to/certificate.cert")
     "tls.key" = file("path/to/private.key")
   }
 }
