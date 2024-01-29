@@ -1,2 +1,1 @@
-token = ''
-print $token
+sum by (pod, namespace) (kube_deployment_status_replicas - kube_deployment_spec_replicas) * on (namespace, pod) group_left(label_pod_template_hash) kube_pod_info
